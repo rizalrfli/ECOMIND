@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: #F2EAFA;
+    color: #2D1B4E;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(229, 217, 242, 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #C4B2F7;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #FF74B1;
+}
+
+/* Glassmorphism & Custom Card styles */
+.ecomind-card {
+  background: #CDC1FF;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 1rem;
+  box-shadow: 0 4px 20px rgba(74, 59, 105, 0.07);
+  transition: all 0.2s ease-in-out;
+}
+
+.ecomind-card-light {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(205, 193, 255, 0.5);
+  border-radius: 0.875rem;
+}
+
+/* Glowing pulse animation */
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 10px #4ADE80;
+  }
+  50% {
+    opacity: 0.6;
+    box-shadow: 0 0 2px #4ADE80;
+  }
+}
+
+.online-pulse {
+  animation: pulse-glow 2s infinite ease-in-out;
+}
