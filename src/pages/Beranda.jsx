@@ -181,35 +181,55 @@ export default function Beranda() {
       {/* GRID SECTION 2: MIDDLE ROW (Tengah Kiri & Tengah Kanan) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Grid Tengah Kiri: Line Chart TREN PARAMETER */}
-        <div className="lg:col-span-7 bg-white/80 backdrop-blur-md border border-[#C4B2F7]/50 rounded-3xl p-6 shadow-card-soft">
-          <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
-            <div>
-              <h2 className="text-base font-extrabold text-[#2D1B4E] flex items-center gap-2">
-                <Sliders className="w-4 h-4 text-[#FF74B1]" />
-                TREN PARAMETER REAL-TIME
-              </h2>
-              <p className="text-xs text-[#4A3B69]">Grafik pergerakan pH dan COD (Sumbu X: Waktu, Sumbu Y: Nilai)</p>
-            </div>
+        <div className="lg:col-span-7 bg-[#7257CD] text-white rounded-3xl p-6 shadow-xl flex flex-col justify-between">
+          <div className="flex items-center justify-between gap-3 mb-2">
+            <h2 className="text-lg font-black text-white uppercase tracking-wide">
+              TREN PARAMETER
+            </h2>
 
             <select
               value={timeFilter}
               onChange={(e) => setTimeFilter(e.target.value)}
-              className="bg-[#E5D9F2] text-[#2D1B4E] text-xs font-bold px-3 py-1.5 rounded-xl border border-[#C4B2F7] focus:outline-none cursor-pointer"
+              className="bg-[#5C42B3] text-white text-xs font-bold px-3 py-1.5 rounded-xl border border-[#8C74DE] focus:outline-none cursor-pointer"
             >
-              <option value="1h">1 Jam Terakhir</option>
-              <option value="6h">6 Jam Terakhir</option>
               <option value="24h">24 Jam Terakhir</option>
+              <option value="6h">6 Jam Terakhir</option>
+              <option value="1h">1 Jam Terakhir</option>
             </select>
+          </div>
+
+          {/* Centered Legend Header */}
+          <div className="flex items-center justify-center gap-6 text-xs font-extrabold my-2 text-white/90">
+            <div className="flex items-center gap-2">
+              <span className="w-3 h-3 rounded-full bg-[#FF74B1]"></span>
+              <span>pH</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="w-3 h-3 rounded-full bg-[#EAE2FC]"></span>
+              <span>COD(mg/L)</span>
+            </div>
           </div>
 
           {/* Line Chart */}
           <div className="h-64 w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={trendHistory} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#E5D9F2" />
-                <XAxis dataKey="time" stroke="#4A3B69" fontSize={10} tickLine={false} />
-                <YAxis yAxisId="left" stroke="#FF74B1" fontSize={10} domain={[0, 14]} tickLine={false} />
-                <YAxis yAxisId="right" orientation="right" stroke="#2D1B4E" fontSize={10} domain={[0, 300]} tickLine={false} />
+              <LineChart data={trendHistory} margin={{ top: 10, right: 10, left: -20, bottom: 15 }}>
+                <CartesianGrid strokeDasharray="0" stroke="rgba(255, 255, 255, 0.15)" vertical={false} />
+                <XAxis 
+                  dataKey="time" 
+                  stroke="#EAE2FC" 
+                  fontSize={11} 
+                  tickLine={false} 
+                  dy={5}
+                  label={{ value: 'Waktu', position: 'insideBottom', offset: -10, fill: '#EAE2FC', fontSize: 11, fontWeight: 'bold' }}
+                />
+                <YAxis 
+                  stroke="#EAE2FC" 
+                  fontSize={11} 
+                  domain={[0, 120]} 
+                  ticks={[20, 40, 60, 80, 100, 120]} 
+                  tickLine={false} 
+                />
                 <Tooltip
                   content={({ active, payload, label }) => {
                     if (active && payload && payload.length) {
@@ -236,21 +256,24 @@ export default function Beranda() {
                     return null;
                   }}
                 />
-                <Line yAxisId="left" type="monotone" dataKey="ph" name="pH Air" stroke="#FF74B1" strokeWidth={3} dot={false} />
-                <Line yAxisId="right" type="monotone" dataKey="cod" name="COD (mg/L)" stroke="#2D1B4E" strokeWidth={2.5} dot={false} />
+                <Line 
+                  type="monotone" 
+                  dataKey="ph" 
+                  name="pH" 
+                  stroke="#FF74B1" 
+                  strokeWidth={3} 
+                  dot={{ r: 4, fill: '#FF74B1', strokeWidth: 0 }} 
+                />
+                <Line 
+                  type="monotone" 
+                  dataKey="cod" 
+                  name="COD(mg/L)" 
+                  stroke="#EAE2FC" 
+                  strokeWidth={3} 
+                  dot={{ r: 4, fill: '#EAE2FC', strokeWidth: 0 }} 
+                />
               </LineChart>
             </ResponsiveContainer>
-          </div>
-
-          <div className="flex items-center justify-center gap-6 text-xs font-bold text-[#4A3B69] mt-2 pt-2 border-t border-[#C4B2F7]/30">
-            <div className="flex items-center gap-2">
-              <span className="w-3 h-3 rounded-full bg-[#FF74B1]"></span>
-              <span>pH (Skala 0-14)</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="w-3 h-3 rounded-full bg-[#2D1B4E]"></span>
-              <span>COD mg/L (Limit: 100 mg/L)</span>
-            </div>
           </div>
         </div>
 

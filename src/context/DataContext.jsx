@@ -97,26 +97,17 @@ export const DataProvider = ({ children }) => {
     setTimeout(() => setToastMessage(null), 4000);
   };
 
-  // Trend history data (24 data points representing hours)
-  const [trendHistory, setTrendHistory] = useState(() => {
-    const initial = [];
-    const now = new Date();
-    for (let i = 23; i >= 0; i--) {
-      const t = new Date(now.getTime() - i * 3600 * 1000);
-      const hourStr = t.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-      initial.push({
-        time: hourStr,
-        ph: +(7.0 + Math.sin(i) * 0.4 + (Math.random() * 0.2 - 0.1)).toFixed(2),
-        cod: +(80 + Math.cos(i) * 12 + (Math.random() * 8 - 4)).toFixed(1),
-        tss: +(135 + Math.sin(i) * 15).toFixed(0),
-        turbidity: +(18 + Math.cos(i) * 3).toFixed(1),
-        phLimitLower: 6.5,
-        phLimitUpper: 8.5,
-        codLimit: 100
-      });
-    }
-    return initial;
-  });
+  // Trend history data matching user reference image dataset
+  const [trendHistory, setTrendHistory] = useState([
+    { time: '09:00', ph: 7.0, cod: 30 },
+    { time: '13:00', ph: 7.1, cod: 26 },
+    { time: '17:00', ph: 7.0, cod: 27 },
+    { time: '21:00', ph: 7.0, cod: 22 },
+    { time: '01:00', ph: 7.0, cod: 23 },
+    { time: '05:00', ph: 7.1, cod: 30 },
+    { time: '09:00', ph: 7.3, cod: 110 },
+    { time: '10:00', ph: 7.2, cod: 23 }
+  ]);
 
   // Historical Batches
   const [batches, setBatches] = useState([
@@ -247,32 +238,10 @@ export const DataProvider = ({ children }) => {
           lastUpdate: now
         };
       });
-
-      // Periodically update trend chart last point
-      setTrendHistory(prev => {
-        const copy = [...prev];
-        const last = copy[copy.length - 1];
-        const nowStr = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-        
-        // Push or update current point
-        if (copy.length > 25) copy.shift();
-        copy.push({
-          time: nowStr,
-          ph: sensorData.ph,
-          cod: sensorData.cod,
-          tss: sensorData.tss,
-          turbidity: sensorData.turbidity,
-          phLimitLower: 6.5,
-          phLimitUpper: 8.5,
-          codLimit: 100
-        });
-        return copy;
-      });
-
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [isLiveStreaming, isAnomalyActive, sensorData.ph, sensorData.cod]);
+  }, [isLiveStreaming, isAnomalyActive]);
 
   // Actions
   const applyDose = (customDose = null) => {

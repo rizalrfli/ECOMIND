@@ -152,14 +152,14 @@ export default function RekomendasiAI() {
           </div>
 
           {/* Card Lower: ANALISIS AI */}
-          <div className="bg-white/80 backdrop-blur-md border border-[#C4B2F7]/50 rounded-3xl p-6 shadow-card-soft flex-1 flex flex-col justify-between space-y-4">
+          <div className="bg-white/80 backdrop-blur-md border border-[#C4B2F7]/50 rounded-3xl p-6 shadow-card-soft flex-1 flex flex-col justify-start space-y-4">
             <div className="flex items-center justify-between border-b border-[#E5D9F2] pb-3">
               <h2 className="text-lg font-black text-[#2D1B4E] uppercase tracking-wide">
                 ANALISIS AI
               </h2>
               <Brain className="w-7 h-7 text-[#FF74B1]" />
             </div>
-            <ul className="space-y-3 text-sm font-bold text-[#2D1B4E] my-auto">
+            <ul className="space-y-3 text-sm font-bold text-[#2D1B4E] pt-1">
               <li className="flex items-center gap-3">
                 <div className="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center text-white shrink-0 shadow-xs">
                   <CheckCircle2 className="w-4 h-4 text-white fill-emerald-500" />

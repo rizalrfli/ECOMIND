@@ -38,8 +38,8 @@ export default function DataRealTime() {
     {
       param: 'pH Air (Derajat Keasaman)',
       value: sensorData.ph.toFixed(2),
-      standard: '6.5 – 8.5',
-      status: sensorData.ph >= 6.5 && sensorData.ph <= 8.5 ? 'Sesuai' : 'FAIL',
+      standard: '6 – 9',
+      status: sensorData.ph >= 6 && sensorData.ph <= 9 ? 'Sesuai' : 'FAIL',
     },
     {
       param: 'COD (Chemical Oxygen Demand)',
@@ -63,9 +63,6 @@ export default function DataRealTime() {
           <h1 className="text-2xl font-black text-[#2D1B4E] mt-1">
             Data Telemetri Real-Time
           </h1>
-          <p className="text-sm font-medium text-[#4A3B69]">
-            Pemantauan langsung kualitas air limbah dari 5 titik sensor IoT industri.
-          </p>
         </div>
       </div>
 
@@ -78,7 +75,7 @@ export default function DataRealTime() {
             unit=""
             min={0}
             max={14}
-            safeRange={[6.5, 8.5]}
+            safeRange={[6, 9]}
           />
           <GaugeCard
             title="COD Influen"
@@ -136,14 +133,12 @@ export default function DataRealTime() {
           </div>
 
           {/* Evaluasi Baku Mutu Banner */}
-          <div className={`mt-5 p-4 rounded-2xl border flex items-center gap-3.5 shadow-xs ${
-            isAllMeetingStandard 
-              ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-900' 
-              : 'bg-amber-500/10 border-amber-500/30 text-amber-900'
-          }`}>
-            <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-white shrink-0 ${
-              isAllMeetingStandard ? 'bg-emerald-500' : 'bg-amber-500'
+          <div className={`mt-5 p-4 rounded-2xl border flex items-center gap-3.5 shadow-xs ${isAllMeetingStandard
+            ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-900'
+            : 'bg-amber-500/10 border-amber-500/30 text-amber-900'
             }`}>
+            <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-white shrink-0 ${isAllMeetingStandard ? 'bg-emerald-500' : 'bg-amber-500'
+              }`}>
               <ShieldCheck className="w-6 h-6" />
             </div>
             <div>
@@ -159,46 +154,68 @@ export default function DataRealTime() {
       </div>
 
       {/* BOTTOM SECTION: Full Width Extended Line Chart */}
-      <div className="bg-white/80 backdrop-blur-md border border-[#C4B2F7]/50 rounded-3xl p-6 shadow-card-soft">
-        <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
-          <div>
-            <h2 className="text-lg font-extrabold text-[#2D1B4E] flex items-center gap-2">
-              <Sliders className="w-5 h-5 text-[#FF74B1]" />
-              GRAFIK TREN PARAMETER LENGKAP (FULL WIDTH)
-            </h2>
-            <p className="text-xs text-[#4A3B69]">
-              Visualisasi kontinu riwayat sensor untuk deteksi pola lonjakan limbah industri.
-            </p>
-          </div>
+      <div className="bg-[#7257CD] text-white rounded-3xl p-6 shadow-xl flex flex-col justify-between">
+        <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
+          <h2 className="text-lg font-black text-white uppercase tracking-wide">
+            TREN PARAMETER
+          </h2>
 
-          {/* Toggle buttons for chart lines */}
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-xs font-bold text-[#4A3B69]">Tampilkan Series:</span>
-            <button
-              onClick={() => toggleParam('ph')}
-              className={`px-3 py-1 rounded-xl text-xs font-extrabold border transition-all ${visibleParams.ph ? 'bg-[#FF74B1] text-white border-[#FF74B1]' : 'bg-[#E5D9F2] text-[#4A3B69]'
-                }`}
-            >
-              pH Air
-            </button>
-            <button
-              onClick={() => toggleParam('cod')}
-              className={`px-3 py-1 rounded-xl text-xs font-extrabold border transition-all ${visibleParams.cod ? 'bg-[#2D1B4E] text-white border-[#2D1B4E]' : 'bg-[#E5D9F2] text-[#4A3B69]'
-                }`}
-            >
-              COD (mg/L)
-            </button>
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 text-xs font-extrabold text-white/90">
+              <button
+                onClick={() => toggleParam('ph')}
+                className={`px-3 py-1 rounded-xl text-xs font-extrabold border transition-all ${visibleParams.ph ? 'bg-[#FF74B1] text-white border-[#FF74B1]' : 'bg-[#5C42B3] text-white/70 border-[#8C74DE]'}`}
+              >
+                pH
+              </button>
+              <button
+                onClick={() => toggleParam('cod')}
+                className={`px-3 py-1 rounded-xl text-xs font-extrabold border transition-all ${visibleParams.cod ? 'bg-[#EAE2FC] text-[#2D1B4E] border-[#EAE2FC]' : 'bg-[#5C42B3] text-white/70 border-[#8C74DE]'}`}
+              >
+                COD(mg/L)
+              </button>
+            </div>
+
+            <select className="bg-[#5C42B3] text-white text-xs font-bold px-3 py-1.5 rounded-xl border border-[#8C74DE] focus:outline-none cursor-pointer">
+              <option value="24h">24 Jam Terakhir</option>
+              <option value="6h">6 Jam Terakhir</option>
+              <option value="1h">1 Jam Terakhir</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Centered Legend Header */}
+        <div className="flex items-center justify-center gap-6 text-xs font-extrabold my-2 text-white/90">
+          <div className="flex items-center gap-2">
+            <span className="w-3 h-3 rounded-full bg-[#FF74B1]"></span>
+            <span>pH</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="w-3 h-3 rounded-full bg-[#EAE2FC]"></span>
+            <span>COD(mg/L)</span>
           </div>
         </div>
 
         {/* Full-width Line Chart */}
         <div className="h-80 w-full">
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={trendHistory} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#E5D9F2" />
-              <XAxis dataKey="time" stroke="#4A3B69" fontSize={11} tickLine={false} />
-              <YAxis yAxisId="left" stroke="#FF74B1" fontSize={11} domain={[0, 14]} tickLine={false} />
-              <YAxis yAxisId="right" orientation="right" stroke="#2D1B4E" fontSize={11} domain={[0, 400]} tickLine={false} />
+            <LineChart data={trendHistory} margin={{ top: 10, right: 20, left: -20, bottom: 15 }}>
+              <CartesianGrid strokeDasharray="0" stroke="rgba(255, 255, 255, 0.15)" vertical={false} />
+              <XAxis
+                dataKey="time"
+                stroke="#EAE2FC"
+                fontSize={11}
+                tickLine={false}
+                dy={5}
+                label={{ value: 'Waktu', position: 'insideBottom', offset: -10, fill: '#EAE2FC', fontSize: 11, fontWeight: 'bold' }}
+              />
+              <YAxis
+                stroke="#EAE2FC"
+                fontSize={11}
+                domain={[0, 120]}
+                ticks={[20, 40, 60, 80, 100, 120]}
+                tickLine={false}
+              />
               <Tooltip
                 content={({ active, payload, label }) => {
                   if (active && payload && payload.length) {
@@ -225,13 +242,26 @@ export default function DataRealTime() {
                   return null;
                 }}
               />
-              <Legend wrapperStyle={{ paddingTop: '10px' }} />
 
               {visibleParams.ph && (
-                <Line yAxisId="left" type="monotone" dataKey="ph" name="pH Air" stroke="#FF74B1" strokeWidth={3} dot={{ r: 3 }} />
+                <Line
+                  type="monotone"
+                  dataKey="ph"
+                  name="pH"
+                  stroke="#FF74B1"
+                  strokeWidth={3}
+                  dot={{ r: 4, fill: '#FF74B1', strokeWidth: 0 }}
+                />
               )}
               {visibleParams.cod && (
-                <Line yAxisId="right" type="monotone" dataKey="cod" name="COD (mg/L)" stroke="#2D1B4E" strokeWidth={2.5} dot={{ r: 3 }} />
+                <Line
+                  type="monotone"
+                  dataKey="cod"
+                  name="COD(mg/L)"
+                  stroke="#EAE2FC"
+                  strokeWidth={3}
+                  dot={{ r: 4, fill: '#EAE2FC', strokeWidth: 0 }}
+                />
               )}
             </LineChart>
           </ResponsiveContainer>
