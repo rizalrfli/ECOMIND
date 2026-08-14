@@ -24,7 +24,8 @@ import {
   ChevronRight,
   Info,
   ShieldCheck,
-  Bell
+  Bell,
+  Leaf
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -44,13 +45,13 @@ export default function Beranda() {
 
   // Mini bar data for past 7 days coagulant consumption
   const barData = [
-    { day: 'Sen', tawas: 28.5 },
-    { day: 'Sel', tawas: 31.0 },
-    { day: 'Rab', tawas: 26.8 },
-    { day: 'Kam', tawas: 29.4 },
-    { day: 'Jum', tawas: 32.1 },
-    { day: 'Sab', tawas: 27.5 },
-    { day: 'Min', tawas: 29.8 },
+    { day: '11 Agus', tawas: 5.0 },
+    { day: '12 Agus', tawas: 4.0 },
+    { day: '13 Agus', tawas: 6.4 },
+    { day: '14 Agus', tawas: 5.0 },
+    { day: '15 Agus', tawas: 5.0 },
+    { day: '16 Agus', tawas: 4.0 },
+    { day: '17 Agus', tawas: 4.4 },
   ];
 
   // Monitoring table rows
@@ -59,24 +60,24 @@ export default function Beranda() {
       param: 'pH Air (Derajat Keasaman)',
       value: `${sensorData.ph.toFixed(2)}`,
       standard: '6.5 - 8.5',
-      status: sensorData.ph >= 6.5 && sensorData.ph <= 8.5 ? 'OK' : 'FAIL',
+      status: sensorData.ph >= 6.5 && sensorData.ph <= 8.5 ? 'Sesuai' : 'FAIL',
       unit: ''
     },
     {
       param: 'COD (Chemical Oxygen Demand)',
       value: `${sensorData.cod.toFixed(1)} mg/L`,
       standard: '< 100 mg/L',
-      status: sensorData.cod <= 100 ? 'OK' : 'FAIL',
+      status: sensorData.cod <= 100 ? 'Sesuai' : 'FAIL',
       unit: 'mg/L'
     }
   ];
 
-  const isAllMeetingStandard = monitoringTable.every(item => item.status === 'OK');
+  const isAllMeetingStandard = monitoringTable.every(item => item.status === 'Sesuai');
 
   return (
-    <div className="p-6 space-y-6 pb-12">
+    <div className="p-4 sm:p-6 space-y-6 pb-12">
       {/* Page Title & Hero Header */}
-      <div className="flex flex-wrap items-center justify-between gap-4 bg-gradient-to-r from-[#CDC1FF] via-[#E5D9F2] to-white p-6 rounded-3xl border border-white/80 shadow-card-soft">
+      <div className="flex flex-wrap items-center justify-between gap-4 bg-gradient-to-r from-[#CDC1FF] via-[#E5D9F2] to-white p-4 sm:p-6 rounded-3xl border border-white/80 shadow-card-soft">
         <div>
           <div className="flex items-center gap-2 text-xs font-extrabold text-[#FF74B1] uppercase tracking-wider">
             <Sparkles className="w-4 h-4" />
@@ -88,27 +89,6 @@ export default function Beranda() {
           <p className="text-sm font-medium text-[#4A3B69] mt-0.5">
             Ringkasan pemantauan real-time dan rekomendasi penentuan dosis koagulan otomatis.
           </p>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <button
-            onClick={toggleAutoMode}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl font-extrabold text-xs shadow-md transition-all ${autoMode
-              ? 'bg-gradient-to-r from-[#FF74B1] to-[#FF9ECA] text-white shadow-pink-glow'
-              : 'bg-white text-[#2D1B4E] border border-[#C4B2F7]'
-              }`}
-          >
-            <Zap className={`w-4 h-4 ${autoMode ? 'fill-white' : 'text-[#FF74B1]'}`} />
-            <span>MODE AUTO: {autoMode ? 'AKTIF' : 'NON-AKTIF'}</span>
-          </button>
-
-          <button
-            onClick={() => applyDose()}
-            className="flex items-center gap-2 bg-[#2D1B4E] hover:bg-[#4A3B69] text-white px-5 py-2.5 rounded-2xl font-extrabold text-xs shadow-md transition-all"
-          >
-            <FlaskConical className="w-4 h-4 text-[#FF74B1]" />
-            <span>TERAPKAN DOSIS ({recommendation.dosage} mg/L)</span>
-          </button>
         </div>
       </div>
 
@@ -231,7 +211,30 @@ export default function Beranda() {
                 <YAxis yAxisId="left" stroke="#FF74B1" fontSize={10} domain={[0, 14]} tickLine={false} />
                 <YAxis yAxisId="right" orientation="right" stroke="#2D1B4E" fontSize={10} domain={[0, 300]} tickLine={false} />
                 <Tooltip
-                  contentStyle={{ backgroundColor: '#2D1B4E', borderRadius: '12px', color: '#fff', border: 'none' }}
+                  content={({ active, payload, label }) => {
+                    if (active && payload && payload.length) {
+                      return (
+                        <div className="bg-[#1E232A] text-white px-3.5 py-2 rounded-xl shadow-2xl border border-gray-700/50 text-center font-sans relative">
+                          <div className="text-xs font-black mb-1 tracking-wider text-white">
+                            {label}
+                          </div>
+                          <div className="space-y-0.5 text-xs font-semibold text-gray-200">
+                            {payload.map((entry, index) => {
+                              const isPh = entry.dataKey === 'ph' || entry.name.toLowerCase().includes('ph');
+                              const labelText = isPh ? 'pH' : 'COD(mg/L)';
+                              return (
+                                <div key={`item-${index}`} className="leading-tight">
+                                  <span>{labelText}: {entry.value}</span>
+                                </div>
+                              );
+                            })}
+                          </div>
+                          <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-[#1E232A]"></div>
+                        </div>
+                      );
+                    }
+                    return null;
+                  }}
                 />
                 <Line yAxisId="left" type="monotone" dataKey="ph" name="pH Air" stroke="#FF74B1" strokeWidth={3} dot={false} />
                 <Line yAxisId="right" type="monotone" dataKey="cod" name="COD (mg/L)" stroke="#2D1B4E" strokeWidth={2.5} dot={false} />
@@ -257,7 +260,7 @@ export default function Beranda() {
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-base font-extrabold text-[#2D1B4E]">MONITORING REAL-TIME</h2>
               <span className="text-[11px] font-bold text-[#4A3B69] bg-[#E5D9F2] px-2.5 py-1 rounded-lg">
-                5 Sensor Aktif
+                2 Sensor Aktif
               </span>
             </div>
 
@@ -279,9 +282,9 @@ export default function Beranda() {
                       <td className="py-2.5 px-2 font-black text-[#FF74B1]">{row.value}</td>
                       <td className="py-2.5 px-2 text-[#4A3B69] font-semibold">{row.standard}</td>
                       <td className="py-2.5 px-2 text-center">
-                        {row.status === 'OK' ? (
+                        {row.status === 'Sesuai' ? (
                           <span className="inline-flex items-center gap-1 text-emerald-700 bg-emerald-100 font-extrabold px-2 py-0.5 rounded-full">
-                            <CheckCircle2 className="w-3 h-3 text-emerald-600" /> OK
+                            <CheckCircle2 className="w-3 h-3 text-emerald-600" /> Sesuai
                           </span>
                         ) : (
                           <span className="inline-flex items-center gap-1 text-red-700 bg-red-100 font-extrabold px-2 py-0.5 rounded-full">
@@ -313,9 +316,6 @@ export default function Beranda() {
                 </div>
               </div>
             </div>
-            <span className="text-xs font-bold bg-white px-3 py-1 rounded-xl shadow-xs">
-              {isAllMeetingStandard ? 'Pass (100%)' : 'Check Warning'}
-            </span>
           </div>
         </div>
       </div>
@@ -358,15 +358,19 @@ export default function Beranda() {
               <ul className="space-y-2 text-xs font-semibold text-[#4A3B69]">
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                  <span>Flokulasi optimal tercapai pada pH 7.20</span>
+                  <span>pH berada pada rentang normal</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                  <span>Penghematan koagulan 17% dibanding dosis konvensional</span>
+                  <span>COD dalam kondisi baik</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                  <span>Risiko endapan lumpur sekunder dalam batas aman</span>
+                  <span>Dosis koagulan optimal untuk efisiensi tinggi</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                  <span>Sistem berjalan stabil</span>
                 </li>
               </ul>
             </div>
@@ -404,28 +408,62 @@ export default function Beranda() {
           </div>
         </div>
 
-        {/* Grid Bawah Kanan: Panel RINGKASAN PENGGUNAAN KOAGULAN (Mini Bar Chart 7 Hari) */}
+        {/* Grid Bawah Kanan: Panel RINGKASAN PENGGUNAAN KOAGULAN */}
         <div className="lg:col-span-4 bg-white/80 backdrop-blur-md border border-[#C4B2F7]/50 rounded-3xl p-6 shadow-card-soft flex flex-col justify-between">
           <div>
-            <div className="flex items-center justify-between mb-2">
-              <h2 className="text-base font-extrabold text-[#2D1B4E] flex items-center gap-2">
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-sm font-black text-[#2D1B4E] uppercase tracking-wide flex items-center gap-2">
                 <FlaskConical className="w-4 h-4 text-[#FF74B1]" />
-                PENGGUNAAN KOAGULAN
+                RINGKASAN PENGGUNAAN KOAGULAN
               </h2>
-              <span className="text-[10px] font-extrabold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-md">
+              <span className="text-[10px] font-extrabold bg-[#E5D9F2] text-[#2D1B4E] px-2.5 py-1 rounded-lg border border-[#C4B2F7]/60 flex items-center gap-1 cursor-pointer">
                 7 Hari Terakhir
               </span>
             </div>
-            <p className="text-xs text-[#4A3B69] mb-3">Total Konsumsi Tawas: 205.2 kg (Rata-rata 29.3 kg/hari)</p>
 
-            <div className="h-40 w-full">
+            {/* 2 Summary Cards */}
+            <div className="grid grid-cols-2 gap-3 mb-4">
+              {/* Box 1: Total Penggunaan */}
+              <div className="bg-[#E5D9F2]/60 p-3 rounded-2xl border border-[#C4B2F7]/40 flex flex-col justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-600 shrink-0">
+                    <FlaskConical className="w-4 h-4 text-indigo-600 fill-indigo-200" />
+                  </div>
+                  <span className="text-[10px] font-bold text-[#4A3B69]">Total Penggunaan</span>
+                </div>
+                <div className="mt-2 flex items-baseline justify-between">
+                  <span className="text-xl font-black text-[#2D1B4E]">29.8 <span className="text-xs font-bold text-[#4A3B69]">kg</span></span>
+                  <div className="text-right">
+                    <span className="block text-[8px] font-semibold text-[#4A3B69]">Rata-rata</span>
+                    <span className="block text-[10px] font-extrabold text-[#2D1B4E]">4.26 kg/Hari</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Box 2: Efisiensi Penggunaan */}
+              <div className="bg-[#E5D9F2]/60 p-3 rounded-2xl border border-[#C4B2F7]/40 relative overflow-hidden flex flex-col justify-between">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-bold text-[#4A3B69]">Efisiensi Penggunaan</span>
+                  <Leaf className="w-5 h-5 text-emerald-500 fill-emerald-400 shrink-0" />
+                </div>
+                <div className="mt-2">
+                  <span className="text-xl font-black text-[#2D1B4E]">17%</span>
+                  <p className="text-[9px] font-semibold text-[#4A3B69] leading-tight mt-0.5">
+                    Lebih hemat dibanding 7 hari sebelumnya
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Bar Chart */}
+            <div className="h-44 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={barData} margin={{ top: 10, right: 0, left: -25, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#E5D9F2" />
-                  <XAxis dataKey="day" stroke="#4A3B69" fontSize={10} tickLine={false} />
-                  <YAxis stroke="#4A3B69" fontSize={10} tickLine={false} />
-                  <Tooltip contentStyle={{ backgroundColor: '#2D1B4E', borderRadius: '10px', color: '#fff' }} />
-                  <Bar dataKey="tawas" name="Tawas (kg)" fill="#FF74B1" radius={[6, 6, 0, 0]} />
+                  <XAxis dataKey="day" stroke="#4A3B69" fontSize={9} tickLine={false} interval={0} />
+                  <YAxis stroke="#4A3B69" fontSize={9} tickLine={false} domain={[0, 6]} ticks={[0, 2, 4, 6]} />
+                  <Tooltip contentStyle={{ backgroundColor: '#2D1B4E', borderRadius: '10px', color: '#fff', fontSize: '11px' }} />
+                  <Bar dataKey="tawas" name="Penggunaan (kg)" fill="#FF74B1" radius={[6, 6, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>

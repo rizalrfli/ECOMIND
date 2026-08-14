@@ -1,42 +1,33 @@
 import React, { useState } from 'react';
 import { useData } from '../context/DataContext';
 import GaugeCard from '../components/charts/GaugeCard';
-import { 
-  ResponsiveContainer, 
-  LineChart, 
-  Line, 
-  XAxis, 
-  YAxis, 
-  Tooltip, 
+import {
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
   CartesianGrid,
   Legend
 } from 'recharts';
-import { 
-  Activity, 
-  Sliders, 
-  CheckCircle2, 
-  XCircle, 
-  Play, 
-  Pause, 
-  RotateCcw,
-  Zap,
-  Layers
+import {
+  Activity,
+  Sliders,
+  CheckCircle2,
+  XCircle,
+  ShieldCheck
 } from 'lucide-react';
 
 export default function DataRealTime() {
-  const { 
-    sensorData, 
-    isLiveStreaming, 
-    setIsLiveStreaming, 
-    trendHistory, 
-    showToast 
+  const {
+    sensorData,
+    trendHistory
   } = useData();
 
   const [visibleParams, setVisibleParams] = useState({
     ph: true,
-    cod: true,
-    tss: false,
-    turbidity: false
+    cod: true
   });
 
   const toggleParam = (key) => {
@@ -45,46 +36,25 @@ export default function DataRealTime() {
 
   const monitoringTable = [
     {
-      param: 'pH Air (Keasaman)',
+      param: 'pH Air (Derajat Keasaman)',
       value: sensorData.ph.toFixed(2),
-      standard: '6.5 - 8.5',
-      status: sensorData.ph >= 6.5 && sensorData.ph <= 8.5 ? 'OK' : 'WARNING',
-      category: 'Kimia'
+      standard: '6.5 – 8.5',
+      status: sensorData.ph >= 6.5 && sensorData.ph <= 8.5 ? 'Sesuai' : 'FAIL',
     },
     {
       param: 'COD (Chemical Oxygen Demand)',
       value: `${sensorData.cod.toFixed(1)} mg/L`,
       standard: '< 100 mg/L',
-      status: sensorData.cod <= 100 ? 'OK' : 'ALERT',
-      category: 'Kimia Organik'
-    },
-    {
-      param: 'TSS (Total Suspended Solids)',
-      value: `${sensorData.tss} mg/L`,
-      standard: '< 150 mg/L',
-      status: sensorData.tss <= 150 ? 'OK' : 'WARNING',
-      category: 'Fisika'
-    },
-    {
-      param: 'Kekeruhan (Turbidity)',
-      value: `${sensorData.turbidity.toFixed(1)} NTU`,
-      standard: '< 25 NTU',
-      status: sensorData.turbidity <= 25 ? 'OK' : 'WARNING',
-      category: 'Fisika'
-    },
-    {
-      param: 'Debit Aliran Influen',
-      value: `${sensorData.flowRate} L/min`,
-      standard: '30 - 60 L/min',
-      status: sensorData.flowRate >= 30 && sensorData.flowRate <= 60 ? 'OK' : 'WARNING',
-      category: 'Hidrolik'
+      status: sensorData.cod <= 100 ? 'Sesuai' : 'FAIL',
     }
   ];
 
+  const isAllMeetingStandard = monitoringTable.every(item => item.status === 'Sesuai');
+
   return (
-    <div className="p-6 space-y-6 pb-12">
+    <div className="p-4 sm:p-6 space-y-6 pb-12">
       {/* Header section */}
-      <div className="flex flex-wrap items-center justify-between gap-4 bg-white/80 backdrop-blur-md p-6 rounded-3xl border border-[#C4B2F7]/50 shadow-card-soft">
+      <div className="flex flex-wrap items-center justify-between gap-4 bg-white/80 backdrop-blur-md p-4 sm:p-6 rounded-3xl border border-[#C4B2F7]/50 shadow-card-soft">
         <div>
           <div className="flex items-center gap-2 text-xs font-extrabold text-[#FF74B1] uppercase tracking-wider">
             <Activity className="w-4 h-4" />
@@ -97,33 +67,11 @@ export default function DataRealTime() {
             Pemantauan langsung kualitas air limbah dari 5 titik sensor IoT industri.
           </p>
         </div>
-
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => setIsLiveStreaming(!isLiveStreaming)}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl font-extrabold text-xs shadow-md transition-all ${
-              isLiveStreaming
-                ? 'bg-emerald-500 text-white shadow-emerald-200'
-                : 'bg-amber-500 text-white shadow-amber-200'
-            }`}
-          >
-            {isLiveStreaming ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-            <span>{isLiveStreaming ? 'LIVE STREAMING AKTIF' : 'STREAMING DI-PAUSE'}</span>
-          </button>
-
-          <button
-            onClick={() => showToast('Sensor dikalibrasi ulang via protocol MQTT', 'info')}
-            className="flex items-center gap-2 bg-[#E5D9F2] text-[#2D1B4E] hover:bg-[#CDC1FF] px-4 py-2.5 rounded-2xl font-extrabold text-xs border border-[#C4B2F7] transition-all"
-          >
-            <RotateCcw className="w-4 h-4" />
-            <span>KALIBRASI SENSOR</span>
-          </button>
-        </div>
       </div>
 
-      {/* TOP SECTION: Gauges & Extra Metrics */}
+      {/* TOP SECTION: Gauges & Monitoring Real-Time Table */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
           <GaugeCard
             title="pH Air Influen"
             value={sensorData.ph}
@@ -142,37 +90,69 @@ export default function DataRealTime() {
           />
         </div>
 
-        {/* RIGHT SECTION: Monitoring Table */}
-        <div className="lg:col-span-4 bg-white/80 backdrop-blur-md border border-[#C4B2F7]/50 rounded-3xl p-6 shadow-card-soft flex flex-col justify-between">
+        {/* RIGHT SECTION: Monitoring Real-Time Card */}
+        <div className="lg:col-span-5 bg-white/80 backdrop-blur-md border border-[#C4B2F7]/50 rounded-3xl p-6 shadow-card-soft flex flex-col justify-between">
           <div>
-            <h2 className="text-base font-extrabold text-[#2D1B4E] mb-3 flex items-center justify-between">
-              <span>TABEL MONITORING SENSOR</span>
-              <span className="text-xs bg-[#E5D9F2] text-[#4A3B69] px-2 py-0.5 rounded-md font-bold">
-                Live Data
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-base font-extrabold text-[#2D1B4E]">MONITORING REAL-TIME</h2>
+              <span className="text-[11px] font-bold text-[#4A3B69] bg-[#E5D9F2] px-3 py-1 rounded-xl">
+                2 Sensor Aktif
               </span>
-            </h2>
+            </div>
 
-            <div className="space-y-3">
-              {monitoringTable.map((row, i) => (
-                <div key={i} className="p-3 rounded-2xl bg-[#E5D9F2]/50 border border-[#C4B2F7]/30 flex items-center justify-between">
-                  <div>
-                    <div className="text-xs font-extrabold text-[#2D1B4E]">{row.param}</div>
-                    <div className="text-[11px] text-[#4A3B69] font-medium">Baku Mutu: {row.standard}</div>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-sm font-black text-[#FF74B1]">{row.value}</div>
-                    {row.status === 'OK' ? (
-                      <span className="inline-flex items-center gap-1 text-[10px] font-extrabold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">
-                        <CheckCircle2 className="w-3 h-3 text-emerald-600" /> Normal
-                      </span>
-                    ) : (
-                      <span className="inline-flex items-center gap-1 text-[10px] font-extrabold text-red-700 bg-red-100 px-2 py-0.5 rounded-full">
-                        <XCircle className="w-3 h-3 text-red-600" /> Alert
-                      </span>
-                    )}
-                  </div>
-                </div>
-              ))}
+            {/* Table */}
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs">
+                <thead>
+                  <tr className="border-b border-[#C4B2F7]/60 text-[#4A3B69] font-extrabold uppercase text-[10px]">
+                    <th className="py-2 px-1">PARAMETER</th>
+                    <th className="py-2 px-1">NILAI</th>
+                    <th className="py-2 px-1">BAKU MUTU</th>
+                    <th className="py-2 px-1 text-center">STATUS</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#E5D9F2]">
+                  {monitoringTable.map((row, idx) => (
+                    <tr key={idx} className="hover:bg-[#E5D9F2]/30 transition-colors">
+                      <td className="py-3 px-1 font-bold text-[#2D1B4E]">{row.param}</td>
+                      <td className="py-3 px-1 font-black text-[#FF74B1]">{row.value}</td>
+                      <td className="py-3 px-1 text-[#4A3B69] font-semibold">{row.standard}</td>
+                      <td className="py-3 px-1 text-center">
+                        {row.status === 'Sesuai' ? (
+                          <span className="inline-flex items-center gap-1 text-emerald-700 bg-emerald-100 font-extrabold px-2.5 py-0.5 rounded-full text-[11px]">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Sesuai
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 text-red-700 bg-red-100 font-extrabold px-2.5 py-0.5 rounded-full text-[11px]">
+                            <XCircle className="w-3.5 h-3.5 text-red-600" /> Alert
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Evaluasi Baku Mutu Banner */}
+          <div className={`mt-5 p-4 rounded-2xl border flex items-center gap-3.5 shadow-xs ${
+            isAllMeetingStandard 
+              ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-900' 
+              : 'bg-amber-500/10 border-amber-500/30 text-amber-900'
+          }`}>
+            <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-white shrink-0 ${
+              isAllMeetingStandard ? 'bg-emerald-500' : 'bg-amber-500'
+            }`}>
+              <ShieldCheck className="w-6 h-6" />
+            </div>
+            <div>
+              <div className="text-[10px] uppercase tracking-wider font-extrabold opacity-80">
+                Evaluasi Baku Mutu
+              </div>
+              <div className="text-sm font-black tracking-tight mt-0.5">
+                {isAllMeetingStandard ? 'MEMENUHI BAKU MUTU AMAN' : 'PERLU PERHATIAN PARAMETER'}
+              </div>
             </div>
           </div>
         </div>
@@ -196,35 +176,17 @@ export default function DataRealTime() {
             <span className="text-xs font-bold text-[#4A3B69]">Tampilkan Series:</span>
             <button
               onClick={() => toggleParam('ph')}
-              className={`px-3 py-1 rounded-xl text-xs font-extrabold border transition-all ${
-                visibleParams.ph ? 'bg-[#FF74B1] text-white border-[#FF74B1]' : 'bg-[#E5D9F2] text-[#4A3B69]'
-              }`}
+              className={`px-3 py-1 rounded-xl text-xs font-extrabold border transition-all ${visibleParams.ph ? 'bg-[#FF74B1] text-white border-[#FF74B1]' : 'bg-[#E5D9F2] text-[#4A3B69]'
+                }`}
             >
               pH Air
             </button>
             <button
               onClick={() => toggleParam('cod')}
-              className={`px-3 py-1 rounded-xl text-xs font-extrabold border transition-all ${
-                visibleParams.cod ? 'bg-[#2D1B4E] text-white border-[#2D1B4E]' : 'bg-[#E5D9F2] text-[#4A3B69]'
-              }`}
+              className={`px-3 py-1 rounded-xl text-xs font-extrabold border transition-all ${visibleParams.cod ? 'bg-[#2D1B4E] text-white border-[#2D1B4E]' : 'bg-[#E5D9F2] text-[#4A3B69]'
+                }`}
             >
               COD (mg/L)
-            </button>
-            <button
-              onClick={() => toggleParam('tss')}
-              className={`px-3 py-1 rounded-xl text-xs font-extrabold border transition-all ${
-                visibleParams.tss ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-[#E5D9F2] text-[#4A3B69]'
-              }`}
-            >
-              TSS (mg/L)
-            </button>
-            <button
-              onClick={() => toggleParam('turbidity')}
-              className={`px-3 py-1 rounded-xl text-xs font-extrabold border transition-all ${
-                visibleParams.turbidity ? 'bg-amber-500 text-white border-amber-500' : 'bg-[#E5D9F2] text-[#4A3B69]'
-              }`}
-            >
-              Kekeruhan (NTU)
             </button>
           </div>
         </div>
@@ -237,7 +199,32 @@ export default function DataRealTime() {
               <XAxis dataKey="time" stroke="#4A3B69" fontSize={11} tickLine={false} />
               <YAxis yAxisId="left" stroke="#FF74B1" fontSize={11} domain={[0, 14]} tickLine={false} />
               <YAxis yAxisId="right" orientation="right" stroke="#2D1B4E" fontSize={11} domain={[0, 400]} tickLine={false} />
-              <Tooltip contentStyle={{ backgroundColor: '#2D1B4E', borderRadius: '12px', color: '#fff', border: 'none' }} />
+              <Tooltip
+                content={({ active, payload, label }) => {
+                  if (active && payload && payload.length) {
+                    return (
+                      <div className="bg-[#1E232A] text-white px-3.5 py-2 rounded-xl shadow-2xl border border-gray-700/50 text-center font-sans relative">
+                        <div className="text-xs font-black mb-1 tracking-wider text-white">
+                          {label}
+                        </div>
+                        <div className="space-y-0.5 text-xs font-semibold text-gray-200">
+                          {payload.map((entry, index) => {
+                            const isPh = entry.dataKey === 'ph' || entry.name.toLowerCase().includes('ph');
+                            const labelText = isPh ? 'pH' : 'COD(mg/L)';
+                            return (
+                              <div key={`item-${index}`} className="leading-tight">
+                                <span>{labelText}: {entry.value}</span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                        <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-[#1E232A]"></div>
+                      </div>
+                    );
+                  }
+                  return null;
+                }}
+              />
               <Legend wrapperStyle={{ paddingTop: '10px' }} />
 
               {visibleParams.ph && (
@@ -245,12 +232,6 @@ export default function DataRealTime() {
               )}
               {visibleParams.cod && (
                 <Line yAxisId="right" type="monotone" dataKey="cod" name="COD (mg/L)" stroke="#2D1B4E" strokeWidth={2.5} dot={{ r: 3 }} />
-              )}
-              {visibleParams.tss && (
-                <Line yAxisId="right" type="monotone" dataKey="tss" name="TSS (mg/L)" stroke="#4F46E5" strokeWidth={2} dot={false} />
-              )}
-              {visibleParams.turbidity && (
-                <Line yAxisId="right" type="monotone" dataKey="turbidity" name="Kekeruhan (NTU)" stroke="#F59E0B" strokeWidth={2} dot={false} />
               )}
             </LineChart>
           </ResponsiveContainer>

@@ -11,12 +11,13 @@ import {
   Info, 
   CheckCircle2, 
   Database,
-  Zap
+  Zap,
+  X
 } from 'lucide-react';
 import { useData } from '../../context/DataContext';
 
 export default function Sidebar() {
-  const { unreadCount } = useData();
+  const { unreadCount, isMobileMenuOpen, closeMobileMenu } = useData();
 
   const navItems = [
     { path: '/beranda', label: 'Beranda', icon: Home },
@@ -33,10 +34,10 @@ export default function Sidebar() {
     { path: '/tentang-sistem', label: 'Tentang Sistem', icon: Info },
   ];
 
-  return (
-    <aside className="w-72 bg-[#CDC1FF]/90 backdrop-blur-xl border-r border-[#C4B2F7] flex flex-col h-screen sticky top-0 shrink-0 select-none overflow-y-auto">
+  const sidebarContent = (
+    <aside className="w-72 bg-[#CDC1FF]/95 backdrop-blur-xl border-r border-[#C4B2F7] flex flex-col h-full shrink-0 select-none overflow-y-auto">
       {/* Brand Header */}
-      <div className="p-6 border-b border-[#C4B2F7]/50 bg-gradient-to-br from-[#CDC1FF] to-[#E5D9F2]">
+      <div className="p-6 border-b border-[#C4B2F7]/50 bg-gradient-to-br from-[#CDC1FF] to-[#E5D9F2] flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-[#FF74B1] to-[#FF9ECA] flex items-center justify-center text-white shadow-pink-glow">
             <Brain className="w-6 h-6 animate-pulse" />
@@ -50,6 +51,15 @@ export default function Sidebar() {
             </p>
           </div>
         </div>
+
+        {/* Close button for mobile drawer */}
+        <button
+          onClick={closeMobileMenu}
+          className="lg:hidden p-2 rounded-xl text-[#2D1B4E] hover:bg-white/50 transition-colors"
+          title="Tutup Menu"
+        >
+          <X className="w-5 h-5" />
+        </button>
       </div>
 
       {/* Navigation Links */}
@@ -63,6 +73,7 @@ export default function Sidebar() {
             <NavLink
               key={item.path}
               to={item.path}
+              onClick={closeMobileMenu}
               className={({ isActive }) =>
                 `flex items-center justify-between px-4 py-3 rounded-xl font-bold text-sm transition-all duration-200 ${
                   isActive
@@ -125,5 +136,29 @@ export default function Sidebar() {
         </div>
       </div>
     </aside>
+  );
+
+  return (
+    <>
+      {/* Desktop Permanent Left Sidebar */}
+      <div className="hidden lg:block h-screen sticky top-0 shrink-0">
+        {sidebarContent}
+      </div>
+
+      {/* Mobile Slide-over Drawer Overlay */}
+      {isMobileMenuOpen && (
+        <div className="lg:hidden fixed inset-0 z-50 flex">
+          {/* Dark Backdrop Shadow */}
+          <div 
+            className="fixed inset-0 bg-[#1E0F38]/60 backdrop-blur-sm transition-opacity"
+            onClick={closeMobileMenu}
+          />
+          {/* Drawer content */}
+          <div className="relative z-10 h-full">
+            {sidebarContent}
+          </div>
+        </div>
+      )}
+    </>
   );
 }

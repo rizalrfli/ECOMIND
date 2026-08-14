@@ -32,9 +32,9 @@ export default function Notifikasi() {
   });
 
   return (
-    <div className="p-6 space-y-6 pb-12">
+    <div className="p-4 sm:p-6 space-y-6 pb-12">
       {/* Header section */}
-      <div className="flex flex-wrap items-center justify-between gap-4 bg-white/80 backdrop-blur-md p-6 rounded-3xl border border-[#C4B2F7]/50 shadow-card-soft">
+      <div className="flex flex-wrap items-center justify-between gap-4 bg-white/80 backdrop-blur-md p-4 sm:p-6 rounded-3xl border border-[#C4B2F7]/50 shadow-card-soft">
         <div>
           <div className="flex items-center gap-2 text-xs font-extrabold text-[#FF74B1] uppercase tracking-wider">
             <Bell className="w-4 h-4" />

@@ -1,15 +1,15 @@
 import React from 'react';
-import { 
-  Info, 
-  Wifi, 
-  Cpu, 
-  Zap, 
-  Activity, 
-  CheckCircle2, 
-  ArrowRight, 
-  Database, 
-  Sliders, 
-  ShieldCheck, 
+import {
+  Info,
+  Wifi,
+  Cpu,
+  Zap,
+  Activity,
+  CheckCircle2,
+  ArrowRight,
+  Database,
+  Sliders,
+  ShieldCheck,
   FlaskConical,
   Brain
 } from 'lucide-react';
@@ -19,51 +19,51 @@ export default function TentangSistem() {
     {
       num: '1',
       title: 'SENSOR IoT',
-      desc: 'Mengukur parameter kualitas air influen (pH, COD, TSS, & Kekeruhan) secara berkala.',
+      desc: 'Mengukur parameter kualitas air influen (pH & COD) secara berkala.',
       icon: Activity,
       color: 'from-pink-500 to-rose-500'
     },
     {
       num: '2',
       title: 'KONEKSI',
-      desc: 'Data telemetri dikirimkan secara secure via protokol Wi-Fi & MQTT ke broker server.',
+      desc: 'Data telemetri dikirimkan secara secure via protokol Wi-Fi & MQTT secara real-time',
       icon: Wifi,
       color: 'from-indigo-500 to-blue-500'
     },
     {
       num: '3',
       title: 'EDGE & SERVER',
-      desc: 'Data mentah divalidasi, difilter dari outlier noise, dan disiapkan untuk inferensi.',
+      desc: 'Data diterima, disimpan dan divalidasi pada server/edge device',
       icon: Database,
       color: 'from-purple-500 to-indigo-600'
     },
     {
       num: '4',
       title: 'DSS ENGINE',
-      desc: 'Model AI Jaringan Syaraf Tiruan (Deep Neural Net v1.7) menghitung dosis optimal.',
+      desc: 'Analisis data menggunakan aturan pakar dan model AI untuk menentukan dosis koagulan optimal',
       icon: Brain,
       color: 'from-fuchsia-600 to-pink-600'
     },
     {
       num: '5',
       title: 'AKTUATOR',
-      desc: 'Perintah otomatis dikirim ke pompa dosing untuk penginjeksian Tawas/PAC yang presisi.',
+      desc: 'Rekomendasi dijalankan melalui pompa dosing atau tindakan operator',
       icon: Zap,
       color: 'from-amber-500 to-orange-500'
     },
     {
       num: '6',
       title: 'MONITORING',
-      desc: 'Hasil olahan & efluen dipantau langsung pada Dashboard React EcoMind AI ini.',
+      desc: 'Hasil tindakan dan kondisi sistem dimonitor secara real-time di dashboard',
       icon: ShieldCheck,
       color: 'from-emerald-500 to-teal-500'
     }
   ];
 
   return (
-    <div className="p-6 space-y-6 pb-12">
+    <div className="p-4 sm:p-6 space-y-6 pb-12">
       {/* Header section */}
-      <div className="flex flex-wrap items-center justify-between gap-4 bg-gradient-to-r from-[#2D1B4E] to-[#4A3B69] text-white p-6 rounded-3xl shadow-xl">
+      <div className="flex flex-wrap items-center justify-between gap-4 bg-gradient-to-r from-[#2D1B4E] to-[#4A3B69] text-white p-4 sm:p-6 rounded-3xl shadow-xl">
         <div>
           <div className="flex items-center gap-2 text-xs font-black text-[#FF74B1] uppercase tracking-wider">
             <Info className="w-4 h-4" />

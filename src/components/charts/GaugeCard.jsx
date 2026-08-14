@@ -73,8 +73,8 @@ export default function GaugeCard({
       </div>
 
       {/* SVG Semicircle Gauge Visual */}
-      <div className="relative flex flex-col items-center justify-center my-2">
-        <svg viewBox="0 0 200 110" className="w-48 h-28 overflow-visible">
+      <div className="relative flex flex-col items-center justify-center my-1">
+        <svg viewBox="0 0 200 105" className="w-48 h-26 overflow-visible">
           <defs>
             <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
               <stop offset="0%" stopColor="#F87171" />
@@ -94,38 +94,38 @@ export default function GaugeCard({
 
           {/* Background Track Arc */}
           <path
-            d="M 20 100 A 80 80 0 0 1 180 100"
+            d="M 25 90 A 75 75 0 0 1 175 90"
             fill="none"
             stroke="#E5D9F2"
-            strokeWidth="18"
+            strokeWidth="16"
             strokeLinecap="round"
           />
 
           {/* Colored Range Arc */}
           <path
-            d="M 20 100 A 80 80 0 0 1 180 100"
+            d="M 25 90 A 75 75 0 0 1 175 90"
             fill="none"
             stroke={`url(#${customRanges ? 'codGradient' : 'gaugeGradient'})`}
-            strokeWidth="18"
+            strokeWidth="16"
             strokeLinecap="round"
           />
 
           {/* Needle Pin Base */}
-          <circle cx="100" cy="100" r="10" fill="#2D1B4E" />
-          <circle cx="100" cy="100" r="5" fill="#FF74B1" />
+          <circle cx="100" cy="90" r="6" fill="#2D1B4E" />
+          <circle cx="100" cy="90" r="3" fill="#FF74B1" />
 
           {/* Needle Arrow */}
-          <g transform={`rotate(${angle}, 100, 100)`}>
+          <g transform={`rotate(${angle}, 100, 90)`}>
             <polygon
-              points="97,100 103,100 100,28"
+              points="98,90 102,90 100,24"
               fill="#2D1B4E"
               className="transition-all duration-700 ease-out"
             />
           </g>
         </svg>
 
-        {/* Big Centered Value Display */}
-        <div className="text-center -mt-6">
+        {/* Big Centered Value Display (positioned cleanly below the pin without overlapping) */}
+        <div className="text-center mt-2">
           <span className="text-3xl font-black text-[#2D1B4E] tracking-tight">
             {typeof value === 'number' ? value.toFixed(1) : value}
           </span>

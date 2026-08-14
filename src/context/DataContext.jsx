@@ -342,6 +342,10 @@ export const DataProvider = ({ children }) => {
 
   const unreadCount = notifications.filter(n => !n.read).length;
 
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const toggleMobileMenu = () => setIsMobileMenuOpen(prev => !prev);
+  const closeMobileMenu = () => setIsMobileMenuOpen(false);
+
   return (
     <DataContext.Provider value={{
       sensorData,
@@ -364,7 +368,11 @@ export const DataProvider = ({ children }) => {
       settings,
       setSettings,
       toastMessage,
-      showToast
+      showToast,
+      isMobileMenuOpen,
+      setIsMobileMenuOpen,
+      toggleMobileMenu,
+      closeMobileMenu
     }}>
       {children}
     </DataContext.Provider>

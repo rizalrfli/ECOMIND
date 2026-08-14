@@ -1,27 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useData } from '../context/DataContext';
-import { 
-  ResponsiveContainer, 
-  BarChart, 
-  Bar, 
-  XAxis, 
-  YAxis, 
-  Tooltip, 
-  CartesianGrid 
+import {
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid
 } from 'recharts';
-import { 
-  History, 
-  FlaskConical, 
-  TrendingUp, 
-  Calendar, 
-  Search, 
-  Filter, 
-  Download, 
-  CheckCircle2, 
-  Clock, 
+import {
+  History,
+  FlaskConical,
+  TrendingUp,
+  Calendar,
+  Search,
+  Filter,
+  Download,
+  CheckCircle2,
+  Clock,
   Droplets,
   X,
-  Sliders
+  Sliders,
+  Leaf,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 
 export default function RiwayatData() {
@@ -30,18 +33,32 @@ export default function RiwayatData() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedBatch, setSelectedBatch] = useState(null);
 
-  // Daily usage data for top section bar chart
+  const scrollContainerRef = useRef(null);
+
+  const scrollLeft = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({ left: -360, behavior: 'smooth' });
+    }
+  };
+
+  const scrollRight = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({ left: 360, behavior: 'smooth' });
+    }
+  };
+
+  // Daily usage data for top section bar chart (Total 29.8 kg, average 4.26 kg/day)
   const usageHistory = [
-    { date: '11 Agt', kg: 28.5, efficiency: 16.2 },
-    { date: '12 Agt', kg: 31.0, efficiency: 17.5 },
-    { date: '13 Agt', kg: 26.8, efficiency: 16.8 },
-    { date: '14 Agt', kg: 29.4, efficiency: 18.0 },
-    { date: '15 Agt', kg: 32.1, efficiency: 15.9 },
-    { date: '16 Agt', kg: 27.5, efficiency: 17.2 },
-    { date: '17 Agt', kg: 29.8, efficiency: 17.0 }
+    { date: '11 Agt', kg: 5.0 },
+    { date: '12 Agt', kg: 4.0 },
+    { date: '13 Agt', kg: 6.4 },
+    { date: '14 Agt', kg: 5.0 },
+    { date: '15 Agt', kg: 5.0 },
+    { date: '16 Agt', kg: 4.0 },
+    { date: '17 Agt', kg: 4.4 }
   ];
 
-  const filteredBatches = batches.filter(b => 
+  const filteredBatches = batches.filter(b =>
     b.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
     b.date.toLowerCase().includes(searchQuery.toLowerCase()) ||
     b.status.toLowerCase().includes(searchQuery.toLowerCase())
@@ -52,9 +69,9 @@ export default function RiwayatData() {
   };
 
   return (
-    <div className="p-6 space-y-6 pb-12">
+    <div className="p-4 sm:p-6 space-y-6 pb-12">
       {/* Header section */}
-      <div className="flex flex-wrap items-center justify-between gap-4 bg-white/80 backdrop-blur-md p-6 rounded-3xl border border-[#C4B2F7]/50 shadow-card-soft">
+      <div className="flex flex-wrap items-center justify-between gap-4 bg-white/80 backdrop-blur-md p-4 sm:p-6 rounded-3xl border border-[#C4B2F7]/50 shadow-card-soft">
         <div>
           <div className="flex items-center gap-2 text-xs font-extrabold text-[#FF74B1] uppercase tracking-wider">
             <History className="w-4 h-4" />
@@ -81,27 +98,56 @@ export default function RiwayatData() {
       <div className="bg-white/80 backdrop-blur-md border border-[#C4B2F7]/50 rounded-3xl p-6 shadow-card-soft">
         <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#FF74B1] to-[#FF9ECA] flex items-center justify-center text-white shadow-pink-glow">
-              <FlaskConical className="w-6 h-6" />
+            <div className="w-10 h-10 rounded-2xl bg-[#E5D9F2] flex items-center justify-center text-[#2D1B4E] border border-[#C4B2F7]/60">
+              <FlaskConical className="w-5 h-5 text-[#FF74B1]" />
             </div>
             <div>
-              <h2 className="text-lg font-extrabold text-[#2D1B4E]">RINGKASAN PENGGUNAAN KOAGULAN</h2>
+              <h2 className="text-lg font-black text-[#2D1B4E] uppercase tracking-tight">RINGKASAN PENGGUNAAN KOAGULAN</h2>
               <p className="text-xs text-[#4A3B69]">Statistik efisiensi dan akumulasi penggunaan bahan kimia harian</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-6">
-            <div className="bg-[#E5D9F2]/70 px-4 py-2.5 rounded-2xl border border-[#C4B2F7]/40 text-center">
-              <div className="text-[10px] font-bold text-[#4A3B69] uppercase">Total Penggunaan</div>
-              <div className="text-xl font-black text-[#2D1B4E] mt-0.5">29.8 kg</div>
+          <span className="text-xs font-extrabold bg-[#E5D9F2] text-[#2D1B4E] px-3 py-1.5 rounded-xl border border-[#C4B2F7]/60 flex items-center gap-1 cursor-pointer">
+            7 Hari Terakhir ▼
+          </span>
+        </div>
+
+        {/* 2 Summary Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          {/* Box 1: Total Penggunaan */}
+          <div className="bg-[#E5D9F2]/60 p-4 rounded-2xl border border-[#C4B2F7]/40 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 flex items-center justify-center text-indigo-600 shrink-0 border border-indigo-200">
+                <FlaskConical className="w-6 h-6 text-indigo-600 fill-indigo-200" />
+              </div>
+              <div>
+                <div className="text-xs font-bold text-[#4A3B69]">Total Penggunaan</div>
+                <div className="text-2xl font-black text-[#2D1B4E] mt-0.5">
+                  29.8 <span className="text-sm font-bold text-[#4A3B69]">kg</span>
+                </div>
+              </div>
             </div>
 
-            <div className="bg-emerald-50 px-4 py-2.5 rounded-2xl border border-emerald-200 text-center">
-              <div className="text-[10px] font-bold text-emerald-800 uppercase">Efisiensi Rata-Rata</div>
-              <div className="text-xl font-black text-emerald-600 mt-0.5 flex items-center justify-center gap-1">
-                <TrendingUp className="w-4 h-4" />
-                <span>+17.0%</span>
+            <div className="text-right bg-white/70 px-3 py-1.5 rounded-xl border border-[#C4B2F7]/40">
+              <span className="block text-[10px] font-bold text-[#4A3B69]">Rata-rata</span>
+              <span className="block text-xs font-black text-[#2D1B4E]">4.26 kg/Hari</span>
+            </div>
+          </div>
+
+          {/* Box 2: Efisiensi Penggunaan */}
+          <div className="bg-[#E5D9F2]/60 p-4 rounded-2xl border border-[#C4B2F7]/40 flex items-center justify-between relative overflow-hidden">
+            <div>
+              <div className="text-xs font-bold text-[#4A3B69]">Efisiensi Penggunaan</div>
+              <div className="flex items-baseline gap-2 mt-0.5">
+                <span className="text-2xl font-black text-[#2D1B4E]">17%</span>
+                <span className="text-xs font-semibold text-[#4A3B69]">
+                  Lebih hemat dibanding 7 hari sebelumnya
+                </span>
               </div>
+            </div>
+
+            <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-emerald-500 shrink-0 border border-emerald-200 ml-2">
+              <Leaf className="w-6 h-6 text-emerald-500 fill-emerald-400" />
             </div>
           </div>
         </div>
@@ -120,12 +166,12 @@ export default function RiwayatData() {
         </div>
       </div>
 
-      {/* BOTTOM SECTION: Search Bar & Grid Cards List Batch */}
+      {/* BOTTOM SECTION: Search Bar & Horizontal Single-Row Carousel Batch */}
       <div className="space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <h2 className="text-lg font-extrabold text-[#2D1B4E] flex items-center gap-2">
             <Calendar className="w-5 h-5 text-[#FF74B1]" />
-            ARシップ LOG BATCH PENGOLAHAN
+            LOG BATCH PENGOLAHAN
           </h2>
 
           <div className="flex items-center gap-3">
@@ -139,13 +185,37 @@ export default function RiwayatData() {
                 className="pl-10 pr-4 py-2 bg-white text-xs font-bold text-[#2D1B4E] rounded-xl border border-[#C4B2F7] focus:outline-none w-64"
               />
             </div>
+
+            {/* Navigation Slider Buttons */}
+            <div className="flex items-center gap-1.5">
+              <button
+                onClick={scrollLeft}
+                className="p-2 rounded-xl bg-[#E5D9F2] text-[#2D1B4E] hover:bg-[#CDC1FF] border border-[#C4B2F7] transition-all shadow-xs"
+                title="Geser Kiri"
+              >
+                <ChevronLeft className="w-4.5 h-4.5" />
+              </button>
+              <button
+                onClick={scrollRight}
+                className="p-2 rounded-xl bg-[#E5D9F2] text-[#2D1B4E] hover:bg-[#CDC1FF] border border-[#C4B2F7] transition-all shadow-xs"
+                title="Geser Kanan"
+              >
+                <ChevronRight className="w-4.5 h-4.5" />
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* Grid Card List */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Horizontal Single Row Card List Slider */}
+        <div 
+          ref={scrollContainerRef}
+          className="flex items-stretch gap-6 overflow-x-auto scrollbar-none scroll-smooth pb-4 pt-1"
+        >
           {filteredBatches.map((batch) => (
-            <div key={batch.id} className="bg-white/80 backdrop-blur-md border border-[#C4B2F7]/50 rounded-3xl p-5 shadow-card-soft hover:shadow-purple-glow transition-all flex flex-col justify-between space-y-4">
+            <div 
+              key={batch.id} 
+              className="w-[320px] sm:w-[350px] shrink-0 bg-white/80 backdrop-blur-md border border-[#C4B2F7]/50 rounded-3xl p-5 shadow-card-soft hover:shadow-purple-glow transition-all flex flex-col justify-between space-y-4"
+            >
               <div>
                 <div className="flex items-center justify-between border-b border-[#E5D9F2] pb-3 mb-3">
                   <span className="font-black text-base text-[#2D1B4E]">{batch.id}</span>
