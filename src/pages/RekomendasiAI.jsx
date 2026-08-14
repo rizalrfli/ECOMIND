@@ -28,16 +28,16 @@ export default function RekomendasiAI() {
   return (
     <div className="p-4 sm:p-6 space-y-6 pb-12">
       {/* Header section */}
-      <div className="flex flex-wrap items-center justify-between gap-4 bg-gradient-to-r from-[#2D1B4E] to-[#4A3B69] text-white p-4 sm:p-6 rounded-3xl shadow-xl">
+      <div className="flex flex-wrap items-center justify-between gap-4 bg-white/80 backdrop-blur-md p-4 sm:p-6 rounded-3xl border border-[#C4B2F7]/50 shadow-card-soft">
         <div>
-          <div className="flex items-center gap-2 text-xs font-black text-[#FF74B1] uppercase tracking-wider">
+          <div className="flex items-center gap-2 text-xs font-extrabold text-[#FF74B1] uppercase tracking-wider">
             <Cpu className="w-4 h-4" />
             <span>AI Decision Support Engine</span>
           </div>
-          <h1 className="text-2xl font-black text-white mt-1">
+          <h1 className="text-2xl font-black text-[#2D1B4E] mt-1">
             Engine Rekomendasi Dosis AI
           </h1>
-          <p className="text-base font-medium text-white/90">
+          <p className="text-base font-medium text-[#4A3B69]">
             Perhitungan dosis koagulan berbasis Jaringan Syaraf Tiruan (Deep Neural Net v1.7).
           </p>
         </div>
