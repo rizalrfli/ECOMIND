@@ -8,14 +8,14 @@ export const DataProvider = ({ children }) => {
   // Real-time sensor state
   const [sensorData, setSensorData] = useState({
     ph: 7.2,
-    cod: 85.4,
+    cod: 23.0,
     tss: 142,
     turbidity: 18.5,
     flowRate: 45.2,
     lastUpdate: new Date()
   });
 
-  const [isLiveStreaming, setIsLiveStreaming] = useState(true);
+  const [isLiveStreaming, setIsLiveStreaming] = useState(false);
   const [isAnomalyActive, setIsAnomalyActive] = useState(false);
   const [autoMode, setAutoMode] = useState(true);
 
