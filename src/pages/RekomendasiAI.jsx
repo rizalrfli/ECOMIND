@@ -37,7 +37,7 @@ export default function RekomendasiAI() {
           <h1 className="text-2xl font-black text-white mt-1">
             Engine Rekomendasi Dosis AI
           </h1>
-          <p className="text-sm font-medium text-white/80">
+          <p className="text-base font-medium text-white/90">
             Perhitungan dosis koagulan berbasis Jaringan Syaraf Tiruan (Deep Neural Net v1.7).
           </p>
         </div>
@@ -159,7 +159,7 @@ export default function RekomendasiAI() {
               </h2>
               <Brain className="w-7 h-7 text-[#FF74B1]" />
             </div>
-            <ul className="space-y-3 text-sm font-bold text-[#2D1B4E] pt-1">
+            <ul className="space-y-3.5 text-base font-bold text-[#2D1B4E] pt-1">
               <li className="flex items-center gap-3">
                 <div className="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center text-white shrink-0 shadow-xs">
                   <CheckCircle2 className="w-4 h-4 text-white fill-emerald-500" />

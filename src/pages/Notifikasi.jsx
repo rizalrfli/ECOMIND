@@ -43,7 +43,7 @@ export default function Notifikasi() {
           <h1 className="text-2xl font-black text-[#2D1B4E] mt-1">
             Log Notifikasi Sistem
           </h1>
-          <p className="text-sm font-medium text-[#4A3B69]">
+          <p className="text-base font-medium text-[#4A3B69]">
             Daftar lengkap riwayat masukan sensor, output rekomendasi AI, dan event sistem.
           </p>
         </div>

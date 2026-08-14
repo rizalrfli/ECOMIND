@@ -72,7 +72,7 @@ export default function TentangSistem() {
           <h1 className="text-2xl font-black text-white mt-1">
             Tentang EcoMind AI
           </h1>
-          <p className="text-sm font-medium text-white/80">
+          <p className="text-base font-medium text-white/90">
             Sistem Cerdas Penentuan Dosis Koagulan untuk Efisiensi Pengolahan Limbah Industri.
           </p>
         </div>
@@ -89,7 +89,7 @@ export default function TentangSistem() {
             <div className="text-xs font-bold text-[#FF74B1]">Sustainability & AI Automation</div>
           </div>
         </div>
-        <p className="text-xs font-medium text-[#4A3B69] leading-relaxed">
+        <p className="text-sm font-medium text-[#4A3B69] leading-relaxed">
           EcoMind AI mengintegrasikan sensor telemetri IoT industri dengan model Decision Support System (DSS) berbasis Machine Learning.
           Sistem ini dirancang untuk menghilangkan ketergantungan pada *Jar Test* manual yang memakan waktu, mengurangi pemborosan bahan kimia koagulan hingga 20%, dan menjamin 100% efluen limbah memenuhi Baku Mutu Lingkungan Hidup secara konsisten.
         </p>

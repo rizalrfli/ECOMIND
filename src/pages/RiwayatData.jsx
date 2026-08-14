@@ -80,7 +80,7 @@ export default function RiwayatData() {
           <h1 className="text-2xl font-black text-[#2D1B4E] mt-1">
             Riwayat Data Pengolahan Limbah
           </h1>
-          <p className="text-sm font-medium text-[#4A3B69]">
+          <p className="text-base font-medium text-[#4A3B69]">
             Rekam jejak historis konsumsi koagulan, parameter limbah, dan performa pengolahan batch.
           </p>
         </div>

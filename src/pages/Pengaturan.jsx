@@ -70,7 +70,7 @@ export default function Pengaturan() {
           <h1 className="text-2xl font-black text-[#2D1B4E] mt-1">
             Pengaturan Sistem EcoMind
           </h1>
-          <p className="text-sm font-medium text-[#4A3B69]">
+          <p className="text-base font-medium text-[#4A3B69]">
             Kelola parameter sistem, integrasi jaringan IoT, profil akun, dan keamanan.
           </p>
         </div>

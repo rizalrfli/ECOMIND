@@ -86,7 +86,7 @@ export default function Beranda() {
           <h1 className="text-2xl font-black text-[#2D1B4E] mt-1">
             Dashboard Utama EcoMind AI
           </h1>
-          <p className="text-sm font-medium text-[#4A3B69] mt-0.5">
+          <p className="text-base font-medium text-[#4A3B69] mt-0.5">
             Ringkasan pemantauan real-time dan rekomendasi penentuan dosis koagulan otomatis.
           </p>
         </div>

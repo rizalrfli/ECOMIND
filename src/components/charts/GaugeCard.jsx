@@ -7,8 +7,8 @@ export default function GaugeCard({
   unit = '',
   min = 0,
   max = 14,
-  safeRange = [6.5, 8.5],
-  warningRange = [5.5, 9.5],
+  safeRange = [6, 9],
+  warningRange = [5, 10],
   customRanges = null // optional override ranges for COD e.g. safe < 100, warning < 200, danger >= 200
 }) {
   // Determine status (Aman, Sedang, Bahaya)
