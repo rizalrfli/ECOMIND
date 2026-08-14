@@ -1,26 +1,26 @@
 import React, { useState } from 'react';
 import { useData } from '../context/DataContext';
 import GaugeCard from '../components/charts/GaugeCard';
-import { 
-  ResponsiveContainer, 
-  LineChart, 
-  Line, 
-  XAxis, 
-  YAxis, 
-  Tooltip, 
-  CartesianGrid, 
-  BarChart, 
-  Bar 
+import {
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+  BarChart,
+  Bar
 } from 'recharts';
-import { 
-  Sparkles, 
-  CheckCircle2, 
-  XCircle, 
-  ArrowDownRight, 
-  Clock, 
-  Sliders, 
-  Zap, 
-  FlaskConical, 
+import {
+  Sparkles,
+  CheckCircle2,
+  XCircle,
+  ArrowDownRight,
+  Clock,
+  Sliders,
+  Zap,
+  FlaskConical,
   ChevronRight,
   Info,
   ShieldCheck,
@@ -29,13 +29,13 @@ import {
 import { Link } from 'react-router-dom';
 
 export default function Beranda() {
-  const { 
-    sensorData, 
-    recommendation, 
-    applyDose, 
-    autoMode, 
-    toggleAutoMode, 
-    trendHistory, 
+  const {
+    sensorData,
+    recommendation,
+    applyDose,
+    autoMode,
+    toggleAutoMode,
+    trendHistory,
     notifications,
     batches
   } = useData();
@@ -68,27 +68,6 @@ export default function Beranda() {
       standard: '< 100 mg/L',
       status: sensorData.cod <= 100 ? 'OK' : 'FAIL',
       unit: 'mg/L'
-    },
-    {
-      param: 'TSS (Total Suspended Solids)',
-      value: `${sensorData.tss} mg/L`,
-      standard: '< 150 mg/L',
-      status: sensorData.tss <= 150 ? 'OK' : 'FAIL',
-      unit: 'mg/L'
-    },
-    {
-      param: 'Kekeruhan (Turbidity)',
-      value: `${sensorData.turbidity.toFixed(1)} NTU`,
-      standard: '< 25 NTU',
-      status: sensorData.turbidity <= 25 ? 'OK' : 'FAIL',
-      unit: 'NTU'
-    },
-    {
-      param: 'Debit Aliran Influen',
-      value: `${sensorData.flowRate} L/min`,
-      standard: '30 - 60 L/min',
-      status: sensorData.flowRate >= 30 && sensorData.flowRate <= 60 ? 'OK' : 'FAIL',
-      unit: 'L/min'
     }
   ];
 
@@ -114,11 +93,10 @@ export default function Beranda() {
         <div className="flex items-center gap-3">
           <button
             onClick={toggleAutoMode}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl font-extrabold text-xs shadow-md transition-all ${
-              autoMode 
-                ? 'bg-gradient-to-r from-[#FF74B1] to-[#FF9ECA] text-white shadow-pink-glow' 
-                : 'bg-white text-[#2D1B4E] border border-[#C4B2F7]'
-            }`}
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl font-extrabold text-xs shadow-md transition-all ${autoMode
+              ? 'bg-gradient-to-r from-[#FF74B1] to-[#FF9ECA] text-white shadow-pink-glow'
+              : 'bg-white text-[#2D1B4E] border border-[#C4B2F7]'
+              }`}
           >
             <Zap className={`w-4 h-4 ${autoMode ? 'fill-white' : 'text-[#FF74B1]'}`} />
             <span>MODE AUTO: {autoMode ? 'AKTIF' : 'NON-AKTIF'}</span>
@@ -209,11 +187,10 @@ export default function Beranda() {
 
             <button
               onClick={toggleAutoMode}
-              className={`px-4 py-3 rounded-xl font-extrabold text-xs border transition-all ${
-                autoMode 
-                  ? 'bg-emerald-500/20 border-emerald-400 text-emerald-300' 
-                  : 'bg-white/10 border-white/30 text-white hover:bg-white/20'
-              }`}
+              className={`px-4 py-3 rounded-xl font-extrabold text-xs border transition-all ${autoMode
+                ? 'bg-emerald-500/20 border-emerald-400 text-emerald-300'
+                : 'bg-white/10 border-white/30 text-white hover:bg-white/20'
+                }`}
             >
               {autoMode ? 'MODE AUTO ON' : 'MODE AUTO OFF'}
             </button>
@@ -253,7 +230,7 @@ export default function Beranda() {
                 <XAxis dataKey="time" stroke="#4A3B69" fontSize={10} tickLine={false} />
                 <YAxis yAxisId="left" stroke="#FF74B1" fontSize={10} domain={[0, 14]} tickLine={false} />
                 <YAxis yAxisId="right" orientation="right" stroke="#2D1B4E" fontSize={10} domain={[0, 300]} tickLine={false} />
-                <Tooltip 
+                <Tooltip
                   contentStyle={{ backgroundColor: '#2D1B4E', borderRadius: '12px', color: '#fff', border: 'none' }}
                 />
                 <Line yAxisId="left" type="monotone" dataKey="ph" name="pH Air" stroke="#FF74B1" strokeWidth={3} dot={false} />
@@ -320,15 +297,13 @@ export default function Beranda() {
           </div>
 
           {/* Prominent Large Label: MEMENUHI BAKU MUTU */}
-          <div className={`mt-4 p-4 rounded-2xl border flex items-center justify-between shadow-xs ${
-            isAllMeetingStandard 
-              ? 'bg-emerald-500/10 border-emerald-500/40 text-emerald-900' 
-              : 'bg-amber-500/10 border-amber-500/40 text-amber-900'
-          }`}>
+          <div className={`mt-4 p-4 rounded-2xl border flex items-center justify-between shadow-xs ${isAllMeetingStandard
+            ? 'bg-emerald-500/10 border-emerald-500/40 text-emerald-900'
+            : 'bg-amber-500/10 border-amber-500/40 text-amber-900'
+            }`}>
             <div className="flex items-center gap-3">
-              <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-white ${
-                isAllMeetingStandard ? 'bg-emerald-500' : 'bg-amber-500'
-              }`}>
+              <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-white ${isAllMeetingStandard ? 'bg-emerald-500' : 'bg-amber-500'
+                }`}>
                 <ShieldCheck className="w-6 h-6" />
               </div>
               <div>
@@ -415,9 +390,8 @@ export default function Beranda() {
               {notifications.slice(0, 3).map((item) => (
                 <div key={item.id} className="p-3 rounded-2xl bg-[#E5D9F2]/50 border border-[#C4B2F7]/40 hover:bg-[#E5D9F2] transition-colors">
                   <div className="flex items-center justify-between">
-                    <span className={`text-[9px] font-black px-2 py-0.5 rounded-full ${
-                      item.type === 'INPUT' ? 'bg-indigo-100 text-indigo-800' : 'bg-emerald-100 text-emerald-800'
-                    }`}>
+                    <span className={`text-[9px] font-black px-2 py-0.5 rounded-full ${item.type === 'INPUT' ? 'bg-indigo-100 text-indigo-800' : 'bg-emerald-100 text-emerald-800'
+                      }`}>
                       {item.type} BATCH #{item.batchId}
                     </span>
                     <span className="text-[10px] text-[#4A3B69] font-medium">{item.timestamp}</span>
