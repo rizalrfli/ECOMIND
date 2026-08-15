@@ -122,7 +122,7 @@ export default function Beranda() {
           <div>
             <div className="flex items-center justify-between mb-4">
               <span className="text-xs font-black uppercase tracking-widest text-[#FF74B1] bg-[#FF74B1]/20 px-3 py-1 rounded-full border border-[#FF74B1]/40">
-                REKOMENDASI DOSIS AI
+                REKOMENDASI DOSIS KOAGULAN
               </span>
               <span className="text-xs font-semibold text-emerald-400 flex items-center gap-1">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>

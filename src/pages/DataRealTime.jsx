@@ -143,7 +143,7 @@ export default function DataRealTime() {
             </div>
             <div>
               <div className="text-[10px] uppercase tracking-wider font-extrabold opacity-80">
-                Evaluasi Baku Mutu
+                Status Keseluruhan
               </div>
               <div className="text-sm font-black tracking-tight mt-0.5">
                 {isAllMeetingStandard ? 'MEMENUHI BAKU MUTU AMAN' : 'PERLU PERHATIAN PARAMETER'}

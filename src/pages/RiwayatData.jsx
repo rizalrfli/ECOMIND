@@ -16,7 +16,6 @@ import {
   Calendar,
   Search,
   Filter,
-  Download,
   CheckCircle2,
   Clock,
   Droplets,
@@ -64,10 +63,6 @@ export default function RiwayatData() {
     b.status.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const handleExportCSV = () => {
-    showToast('📄 Data riwayat batch berhasil diekspor ke file CSV!', 'success');
-  };
-
   return (
     <div className="p-4 sm:p-6 space-y-6 pb-12">
       {/* Header section */}
@@ -84,14 +79,6 @@ export default function RiwayatData() {
             Rekam jejak historis konsumsi koagulan, parameter limbah, dan performa pengolahan batch.
           </p>
         </div>
-
-        <button
-          onClick={handleExportCSV}
-          className="flex items-center gap-2 bg-[#2D1B4E] hover:bg-[#4A3B69] text-white font-extrabold text-xs px-4 py-2.5 rounded-2xl shadow-md transition-all"
-        >
-          <Download className="w-4 h-4 text-[#FF74B1]" />
-          <span>EKSPOR DATA CSV</span>
-        </button>
       </div>
 
       {/* TOP SECTION: Wide Card RINGKASAN PENGGUNAAN KOAGULAN */}

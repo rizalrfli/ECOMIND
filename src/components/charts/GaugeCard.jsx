@@ -133,11 +133,9 @@ export default function GaugeCard({
         </div>
       </div>
 
-      {/* Range min/max labels */}
-      <div className="flex justify-between text-[11px] font-bold text-[#4A3B69]/70 px-4 mt-1 border-t border-[#C4B2F7]/30 pt-2">
-        <span>Min: {min}</span>
+      {/* Baku Mutu label */}
+      <div className="flex justify-center text-[11px] font-bold text-[#4A3B69]/70 px-4 mt-1 border-t border-[#C4B2F7]/30 pt-2">
         <span>Baku Mutu: {customRanges ? `< ${customRanges.safe}` : `${safeRange[0]} - ${safeRange[1]}`}</span>
-        <span>Max: {max}</span>
       </div>
 
       {/* Color Status Legend */}
