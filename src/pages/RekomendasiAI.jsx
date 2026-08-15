@@ -161,27 +161,19 @@ export default function RekomendasiAI() {
             </div>
             <ul className="space-y-3.5 text-base font-bold text-[#2D1B4E] pt-1">
               <li className="flex items-center gap-3">
-                <div className="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center text-white shrink-0 shadow-xs">
-                  <CheckCircle2 className="w-4 h-4 text-white fill-emerald-500" />
-                </div>
+                <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0" />
                 <span className="text-[#2D1B4E]">pH berada pada rentang normal</span>
               </li>
               <li className="flex items-center gap-3">
-                <div className="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center text-white shrink-0 shadow-xs">
-                  <CheckCircle2 className="w-4 h-4 text-white fill-emerald-500" />
-                </div>
+                <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0" />
                 <span className="text-[#2D1B4E]">COD dalam kondisi baik</span>
               </li>
               <li className="flex items-center gap-3">
-                <div className="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center text-white shrink-0 shadow-xs">
-                  <CheckCircle2 className="w-4 h-4 text-white fill-emerald-500" />
-                </div>
+                <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0" />
                 <span className="text-[#2D1B4E]">Dosis koagulan optimal untuk efisiensi tinggi</span>
               </li>
               <li className="flex items-center gap-3">
-                <div className="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center text-white shrink-0 shadow-xs">
-                  <CheckCircle2 className="w-4 h-4 text-white fill-emerald-500" />
-                </div>
+                <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0" />
                 <span className="text-[#2D1B4E]">Sistem berjalan stabil</span>
               </li>
             </ul>
