@@ -59,8 +59,8 @@ export default function Beranda() {
     {
       param: 'pH Air (Derajat Keasaman)',
       value: `${sensorData.ph.toFixed(2)}`,
-      standard: '6.5 - 8.5',
-      status: sensorData.ph >= 6.5 && sensorData.ph <= 8.5 ? 'Sesuai' : 'FAIL',
+      standard: '6 - 9',
+      status: sensorData.ph >= 6 && sensorData.ph <= 9 ? 'Sesuai' : 'FAIL',
       unit: ''
     },
     {
@@ -102,8 +102,8 @@ export default function Beranda() {
             unit=""
             min={0}
             max={14}
-            safeRange={[6.5, 8.5]}
-            warningRange={[5.5, 9.5]}
+            safeRange={[6, 9]}
+            warningRange={[5, 10]}
           />
           <GaugeCard
             title="COD Influen"
@@ -162,7 +162,7 @@ export default function Beranda() {
               onClick={() => applyDose()}
               className="flex-1 bg-[#FF74B1] hover:bg-[#FF74B1]/90 text-white font-extrabold text-xs py-3 px-4 rounded-xl shadow-pink-glow transition-all text-center"
             >
-              TERAPKAN DOSIS NOW
+              TERAPKAN DOSIS
             </button>
 
             <button
@@ -215,20 +215,20 @@ export default function Beranda() {
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={trendHistory} margin={{ top: 10, right: 10, left: -20, bottom: 15 }}>
                 <CartesianGrid strokeDasharray="0" stroke="rgba(255, 255, 255, 0.15)" vertical={false} />
-                <XAxis 
-                  dataKey="time" 
-                  stroke="#EAE2FC" 
-                  fontSize={11} 
-                  tickLine={false} 
+                <XAxis
+                  dataKey="time"
+                  stroke="#EAE2FC"
+                  fontSize={11}
+                  tickLine={false}
                   dy={5}
                   label={{ value: 'Waktu', position: 'insideBottom', offset: -10, fill: '#EAE2FC', fontSize: 11, fontWeight: 'bold' }}
                 />
-                <YAxis 
-                  stroke="#EAE2FC" 
-                  fontSize={11} 
-                  domain={[0, 120]} 
-                  ticks={[20, 40, 60, 80, 100, 120]} 
-                  tickLine={false} 
+                <YAxis
+                  stroke="#EAE2FC"
+                  fontSize={11}
+                  domain={[0, 120]}
+                  ticks={[20, 40, 60, 80, 100, 120]}
+                  tickLine={false}
                 />
                 <Tooltip
                   content={({ active, payload, label }) => {
@@ -256,21 +256,21 @@ export default function Beranda() {
                     return null;
                   }}
                 />
-                <Line 
-                  type="monotone" 
-                  dataKey="ph" 
-                  name="pH" 
-                  stroke="#FF74B1" 
-                  strokeWidth={3} 
-                  dot={{ r: 4, fill: '#FF74B1', strokeWidth: 0 }} 
+                <Line
+                  type="monotone"
+                  dataKey="ph"
+                  name="pH"
+                  stroke="#FF74B1"
+                  strokeWidth={3}
+                  dot={{ r: 4, fill: '#FF74B1', strokeWidth: 0 }}
                 />
-                <Line 
-                  type="monotone" 
-                  dataKey="cod" 
-                  name="COD(mg/L)" 
-                  stroke="#EAE2FC" 
-                  strokeWidth={3} 
-                  dot={{ r: 4, fill: '#EAE2FC', strokeWidth: 0 }} 
+                <Line
+                  type="monotone"
+                  dataKey="cod"
+                  name="COD(mg/L)"
+                  stroke="#EAE2FC"
+                  strokeWidth={3}
+                  dot={{ r: 4, fill: '#EAE2FC', strokeWidth: 0 }}
                 />
               </LineChart>
             </ResponsiveContainer>
