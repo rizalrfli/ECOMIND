@@ -223,7 +223,7 @@ export default function RiwayatData() {
                     <span className="flex items-center gap-1.5 text-[#4A3B69]/70">
                       <Droplets className="w-3.5 h-3.5 text-indigo-500" /> Volume Limbah:
                     </span>
-                    <span className="font-extrabold text-[#2D1B4E]">{batch.volume} Litrik</span>
+                    <span className="font-extrabold text-[#2D1B4E]">{batch.volume} L</span>
                   </div>
 
                   <div className="flex items-center justify-between">
